@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>캡차 스타일 선택 메이커 v7</title>
+<style>
+:root{
+  --site-bg:#f7f3f6;
+  --panel:#ffffff;
+  --line:#e8dfe5;
+  --text:#4f4650;
+  --muted:#8e828a;
+  --theme:#7edb97;
+  --button:#2f9b8f;
+  --button-text:#ffffff;
+  --cell:#ffffff;
+  --header-text:#ffffff;
+  --body-text:#ffffff;
+  --shadow:0 18px 42px rgba(94,70,88,.09);
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:
+    radial-gradient(circle at 12% 10%, rgba(255,255,255,.9) 0, rgba(255,255,255,.9) 10%, transparent 11%),
+    radial-gradient(circle at 88% 14%, rgba(255,244,250,.8) 0, rgba(255,244,250,.8) 12%, transparent 13%),
+    linear-gradient(180deg, #fcf8fb 0%, #f4edf3 48%, #f8f3f7 100%);
+  color:var(--text);
+  font-family:Pretendard,"Malgun Gothic","Apple SD Gothic Neo",sans-serif;
+}
+.wrap{
+  max-width:1360px;
+  margin:0 auto;
+  padding:28px;
+  display:grid;
+  grid-template-columns:390px minmax(0, 1fr);
+  gap:24px;
+  align-items:start;
+}
+.panel{
+  background:rgba(255,255,255,.94);
+  border:1px solid rgba(232,223,229,.95);
+  border-radius:26px;
+  box-shadow:var(--shadow);
+  backdrop-filter: blur(10px);
+}
+.left{
+  padding:16px;
+}
+.hero{
+  padding:16px 16px 6px;
+}
+.hero-card{
+  background:linear-gradient(135deg, #fff8fb 0%, #f6eef7 100%);
+  border:1px solid #eee3ea;
+  border-radius:18px;
+  padding:16px;
+}
+.hero-title{
+  font-size:18px;
+  font-weight:900;
+  margin-bottom:6px;
+}
+.hero-sub{
+  font-size:12px;
+  color:var(--muted);
+  line-height:1.55;
+}
+details{
+  border:1px solid #efe5ea;
+  border-radius:18px;
+  background:#fffdfd;
+  overflow:hidden;
+}
+details + details{margin-top:12px}
+summary{
+  list-style:none;
+  cursor:pointer;
+  padding:14px 16px;
+  font-weight:900;
+  font-size:14px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+summary::-webkit-details-marker{display:none}
+summary::after{
+  content:"⌄";
+  font-size:14px;
+  color:#8f8690;
+}
+details[open] summary::after{content:"⌃"}
+.content{
+  padding:0 16px 16px;
+  border-top:1px solid #f2e9ee;
+}
+.label{
+  font-size:13px;
+  font-weight:800;
+  margin:12px 0 7px;
+}
+.help{
+  font-size:12px;
+  color:var(--muted);
+  line-height:1.55;
+  margin-top:6px;
+}
+input[type="text"], select{
+  width:100%;
+  height:44px;
+  border:1px solid var(--line);
+  border-radius:14px;
+  padding:10px 12px;
+  background:#fff;
+  color:var(--text);
+  outline:none;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.7);
+}
+input[type="text"]:focus, select:focus{
+  border-color:#d8bfcd;
+  box-shadow:0 0 0 4px rgba(216,191,205,.16);
+}
+input[type="color"]{
+  width:100%;
+  height:42px;
+  border:none;
+  background:none;
+  padding:0;
+}
+.row2{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+.btns{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+}
+button{
+  border:none;
+  border-radius:14px;
+  padding:10px 14px;
+  font-weight:900;
+  cursor:pointer;
+  background:#f5eff3;
+  color:#5e555d;
+  transition:.15s ease;
+}
+button:hover{transform:translateY(-1px)}
+button.active{
+  background:#efe7fb;
+  outline:2px solid #8b73bc;
+}
+button.primary{
+  background:var(--button);
+  color:var(--button-text);
+}
+.cell-editor-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+.cell-editor{
+  border:1px solid #ede2e8;
+  border-radius:16px;
+  background:linear-gradient(180deg,#ffffff 0%, #fff9fc 100%);
+  padding:10px;
+}
+.cell-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:8px;
+  gap:6px;
+}
+.cell-title{
+  font-size:12px;
+  font-weight:900;
+}
+.cell-preview{
+  height:88px;
+  border-radius:14px;
+  overflow:hidden;
+  background:#ffffff;
+  border:1px solid #ede2e8;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:32px;
+  margin-bottom:8px;
+}
+.cell-preview img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+}
+.cell-actions{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:6px;
+}
+.cell-actions button{
+  padding:8px 8px;
+  font-size:12px;
+  border-radius:11px;
+}
+.answer-tag{
+  font-size:11px;
+  font-weight:900;
+  color:#7a4b00;
+  background:#fff1c7;
+  border-radius:999px;
+  padding:4px 8px;
+}
+.preview-panel{
+  padding:32px;
+  min-height:920px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.78), rgba(251,243,248,.82));
+}
+.preview-stage{
+  width:100%;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:16px;
+}
+.canvas-shell{
+  width:100%;
+  min-height:820px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:18px;
+  border-radius:26px;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.84), rgba(250,242,247,.9));
+  border:1px solid #efe5ea;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.85);
+}
+.canvas-wrap{
+  position:relative;
+  width:520px;
+  max-width:100%;
+}
+canvas{
+  width:100%;
+  height:auto;
+  display:block;
+  image-rendering:auto;
+}
+.save-row{
+  width:520px;
+  max-width:100%;
+  display:flex;
+  gap:10px;
+}
+.save-row input{flex:1}
+.note{
+  width:520px;
+  max-width:100%;
+  font-size:12px;
+  color:var(--muted);
+  line-height:1.55;
+}
+.hidden{display:none}
+@media (max-width: 1100px){
+  .wrap{
+    grid-template-columns:1fr;
+    padding:14px;
+  }
+  .preview-panel{
+    min-height:auto;
+    padding:18px;
+  }
+  .canvas-shell{
+    min-height:auto;
+  }
+}
+@media (max-width: 540px){
+  .cell-editor-grid{
+    grid-template-columns:1fr;
+  }
+}
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <section class="panel left">
+<details open>
+        <summary>기본 설정</summary>
+        <div class="content">
+          <div class="label">문구</div>
+          <input id="promptText" type="text" value="레브가 있는 이미지를 모두 선택하세요." />
+
+          <div class="label">종류 선택</div>
+          <div class="btns" id="animalBtns">
+            <button class="active" data-animal="dog">강아지</button>
+            <button data-animal="cat">고양이</button>
+            <button data-animal="rabbit">토끼</button>
+            <button data-animal="hamster">햄스터</button>
+            <button data-animal="tiger">호랑이</button>
+            <button data-animal="fox">여우</button>
+            <button data-animal="wolf">늑대</button>
+            <button data-animal="custom">직접 선택</button>
+          </div>
+          <div class="help">원하면 전부 사진으로 넣고, 귀찮으면 일부 칸만 이모지로 채울 수 있습니다.</div>
+
+          <div class="label">격자 크기</div>
+          <select id="gridSize">
+            <option value="3" selected>3 x 3</option>
+            <option value="4">4 x 4</option>
+          </select>
+
+          <div class="label">빠른 채우기</div>
+          <div class="btns">
+            <button id="fillEmptyBtn">빈 칸 전체 이모지 채우기</button>
+            <button id="clearBtn">전체 비우기</button>
+            <button id="shuffleBtn">순서 섞기</button>
+          </div>
+        </div>
+      </details>
+
+      <details>
+        <summary>색상 설정</summary>
+        <div class="content">
+          <div class="row2">
+            <div>
+              <div class="label">상단 배경</div>
+              <input id="themeColor" type="color" value="#7edb97" />
+            </div>
+            <div>
+              <div class="label">확인 버튼</div>
+              <input id="buttonColor" type="color" value="#2f9b8f" />
+            </div>
+            <div>
+              <div class="label">칸 배경</div>
+              <input id="cellColor" type="color" value="#ffffff" />
+            </div>
+            <div>
+              <div class="label">바깥 배경</div>
+              <input id="bgColor" type="color" value="#f5eff3" />
+            </div>
+            <div>
+              <div class="label">제목 글자색</div>
+              <input id="headerTextColor" type="color" value="#ffffff" />
+            </div>
+            <div>
+              <div class="label">설명 글자색</div>
+              <input id="bodyTextColor" type="color" value="#ffffff" />
+            </div>
+          </div>
+        </div>
+      </details>
+
+      <details open>
+        <summary>칸별 이미지/이모지 입력</summary>
+        <div class="content">
+          <div class="help">각 칸마다 사진 넣기 / 이모지 넣기 / 비우기 / 정답 설정이 가능합니다.</div>
+          <div id="cellEditors" class="cell-editor-grid"></div>
+        </div>
+      </details>
+    </section>
+
+    <section class="panel preview-panel">
+      <div class="preview-stage">
+        <div class="canvas-shell">
+          <div class="canvas-wrap">
+            <canvas id="mainCanvas" width="840" height="1400"></canvas>
+          </div>
+        </div>
+        <div class="save-row">
+          <input id="fileName" type="text" value="captcha-image" />
+          <button id="saveBtn" class="primary">PNG 저장</button>
+        </div>
+        <div class="note">고해상도 저장 버전입니다. 화면 비율은 유지하고 PNG만 더 크게 저장됩니다.</div>
+      </div>
+    </section>
+  </div>
+
+  <input id="imageInput" class="hidden" type="file" accept="image/*" />
+
+<script>
+(() => {
+  const EMOJIS = {
+    dog:'🐶',
+    cat:'🐱',
+    rabbit:'🐰',
+    hamster:'🐹',
+    tiger:'🐯',
+    fox:'🦊',
+    wolf:'🐺',
+    custom:''
+  };
+
+  const promptText = document.getElementById('promptText');
+  const gridSize = document.getElementById('gridSize');
+  const themeColor = document.getElementById('themeColor');
+  const buttonColor = document.getElementById('buttonColor');
+  const cellColor = document.getElementById('cellColor');
+  const bgColor = document.getElementById('bgColor');
+  const headerTextColor = document.getElementById('headerTextColor');
+  const bodyTextColor = document.getElementById('bodyTextColor');
+  const saveBtn = document.getElementById('saveBtn');
+  const fileName = document.getElementById('fileName');
+  const imageInput = document.getElementById('imageInput');
+  const cellEditors = document.getElementById('cellEditors');
+
+  const canvas = document.getElementById('mainCanvas');
+  const ctx = canvas.getContext('2d');
+
+  let selectedAnimal = 'dog';
+  let size = 3;
+  let cells = [];
+  let imageTargetIndex = -1;
+
+  function makeDefaultCell() {
+    return { type:'empty', emoji:'', image:null, imageSrc:'', answer:false };
+  }
+
+  function ensureCells() {
+    const count = size * size;
+    const prev = cells.slice();
+    cells = Array.from({length:count}, (_, i) => prev[i] || makeDefaultCell());
+    if (cells.length > count) cells = cells.slice(0, count);
+  }
+
+  function roundRect(c, x, y, w, h, r) {
+    c.beginPath();
+    c.moveTo(x+r, y);
+    c.arcTo(x+w, y, x+w, y+h, r);
+    c.arcTo(x+w, y+h, x, y+h, r);
+    c.arcTo(x, y+h, x, y, r);
+    c.arcTo(x, y, x+w, y, r);
+    c.closePath();
+  }
+
+  function drawWrappedText(c, text, x, y, maxWidth, lineHeight, maxLines=3) {
+    const words = String(text || '').split(' ');
+    const lines = [];
+    let line = '';
+    for (let i=0; i<words.length; i++) {
+      const test = line + words[i] + ' ';
+      if (c.measureText(test).width > maxWidth && line) {
+        lines.push(line.trim());
+        line = words[i] + ' ';
+      } else {
+        line = test;
+      }
+    }
+    if (line.trim()) lines.push(line.trim());
+    lines.slice(0, maxLines).forEach((ln, idx) => {
+      c.fillText(ln, x, y + idx * lineHeight);
+    });
+  }
+
+  function applyCanvasSize() {
+    const scale = 2;
+    const baseW = 420;
+    const baseH = size === 3 ? 700 : 820;
+    canvas.width = baseW * scale;
+    canvas.height = baseH * scale;
+    ctx.setTransform(scale, 0, 0, scale, 0, 0);
+  }
+
+  function draw() {
+    applyCanvasSize();
+
+    const W = 420;
+    const H = size === 3 ? 700 : 820;
+
+    ctx.clearRect(0,0,W,H);
+    ctx.fillStyle = bgColor.value;
+    ctx.fillRect(0,0,W,H);
+
+    const outerX = 28;
+    const outerY = 22;
+    const outerW = W - 56;
+    const outerH = H - 44;
+
+    const headerH = 126;
+    const footerH = 96;
+
+    ctx.fillStyle = '#fbf8fa';
+    ctx.fillRect(outerX, outerY, outerW, outerH);
+    ctx.strokeStyle = '#ddd4d9';
+    ctx.lineWidth = 1;
+    ctx.strokeRect(outerX, outerY, outerW, outerH);
+
+    ctx.fillStyle = themeColor.value;
+    ctx.fillRect(outerX, outerY, outerW, headerH);
+
+    ctx.fillStyle = headerTextColor.value;
+    ctx.font = '700 15px Pretendard, sans-serif';
+    drawWrappedText(ctx, promptText.value || '가 있는 이미지를 모두 선택하세요.', outerX + 16, outerY + 36, outerW - 32, 22, 3);
+
+    ctx.fillStyle = bodyTextColor.value;
+    ctx.font = '600 11px Pretendard, sans-serif';
+    drawWrappedText(ctx, '위의 조건과 일치하는 셀 이미지를 모두 선택했으면 확인을 클릭하세요.', outerX + 16, outerY + 82, outerW - 32, 18, 3);
+
+    const gridAreaTop = outerY + headerH + 10;
+    const gridAreaH = outerH - headerH - footerH - 10;
+    const gap = 4;
+    const maxGridSize = Math.min(outerW - 20, gridAreaH - 16);
+    const cellSize = Math.floor((maxGridSize - gap * (size - 1)) / size);
+    const gridW = cellSize * size + gap * (size - 1);
+    const gridH = gridW;
+    const gridX = Math.round((W - gridW) / 2);
+    const gridY = Math.round(gridAreaTop + (gridAreaH - gridH) / 2);
+
+    cells.forEach((cell, index) => {
+      const row = Math.floor(index / size);
+      const col = index % size;
+      const x = gridX + col * (cellSize + gap);
+      const y = gridY + row * (cellSize + gap);
+
+      ctx.fillStyle = cellColor.value;
+      ctx.fillRect(x, y, cellSize, cellSize);
+
+      if (cell.type === 'emoji' && cell.emoji) {
+        ctx.font = `${Math.floor(cellSize * 0.42)}px "Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif`;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(cell.emoji, x + cellSize / 2, y + cellSize / 2 + 2);
+      } else if (cell.type === 'image' && cell.image) {
+        const img = cell.image;
+        const scale = Math.max(cellSize / img.width, cellSize / img.height);
+        const dw = img.width * scale;
+        const dh = img.height * scale;
+        const dx = x + (cellSize - dw) / 2;
+        const dy = y + (cellSize - dh) / 2;
+        ctx.save();
+        ctx.beginPath();
+        ctx.rect(x, y, cellSize, cellSize);
+        ctx.clip();
+        ctx.drawImage(img, dx, dy, dw, dh);
+        ctx.restore();
+      }
+
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'alphabetic';
+    });
+
+    const footerY = outerY + outerH - footerH;
+    ctx.fillStyle = '#fbf8fa';
+    ctx.fillRect(outerX, footerY, outerW, footerH);
+
+    ctx.fillStyle = '#fff';
+    roundRect(ctx, outerX + 18, footerY + 24, 42, 42, 21);
+    ctx.fill();
+    ctx.strokeStyle = '#d3c8ce';
+    ctx.stroke();
+    ctx.fillStyle = '#6c646d';
+    ctx.font = '700 22px Pretendard, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('↻', outerX + 39, footerY + 45);
+
+    ctx.fillStyle = buttonColor.value;
+    roundRect(ctx, outerX + outerW - 114, footerY + 24, 90, 42, 0);
+    ctx.fill();
+    ctx.fillStyle = '#fff';
+    ctx.font = '700 14px Pretendard, sans-serif';
+    ctx.fillText('확인', outerX + outerW - 69, footerY + 45);
+
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'alphabetic';
+  }
+
+  function renderCellEditors() {
+    cellEditors.innerHTML = '';
+    cells.forEach((cell, index) => {
+      const wrap = document.createElement('div');
+      wrap.className = 'cell-editor';
+
+      const head = document.createElement('div');
+      head.className = 'cell-head';
+
+      const title = document.createElement('div');
+      title.className = 'cell-title';
+      title.textContent = `${index + 1}번 칸`;
+
+      const tag = document.createElement('div');
+      if (cell.answer) {
+        tag.className = 'answer-tag';
+        tag.textContent = '정답';
+      }
+
+      head.appendChild(title);
+      if (cell.answer) head.appendChild(tag);
+
+      const preview = document.createElement('div');
+      preview.className = 'cell-preview';
+      if (cell.type === 'image' && cell.imageSrc) {
+        const img = document.createElement('img');
+        img.src = cell.imageSrc;
+        preview.appendChild(img);
+      } else if (cell.type === 'emoji' && cell.emoji) {
+        preview.textContent = cell.emoji;
+      } else {
+        preview.style.fontSize = '12px';
+        preview.style.color = '#9b9198';
+        preview.textContent = '비어 있음';
+      }
+
+      const actions = document.createElement('div');
+      actions.className = 'cell-actions';
+
+      const imageBtn = document.createElement('button');
+      imageBtn.textContent = '사진 넣기';
+      imageBtn.onclick = () => {
+        imageTargetIndex = index;
+        imageInput.click();
+      };
+
+      const emojiBtn = document.createElement('button');
+      emojiBtn.textContent = '이모지 넣기';
+      emojiBtn.onclick = () => {
+        const emoji = EMOJIS[selectedAnimal];
+        cells[index].type = emoji ? 'emoji' : 'empty';
+        cells[index].emoji = emoji || '';
+        cells[index].image = null;
+        cells[index].imageSrc = '';
+        renderCellEditors();
+        draw();
+      };
+
+      const clearBtn = document.createElement('button');
+      clearBtn.textContent = '비우기';
+      clearBtn.onclick = () => {
+        cells[index] = makeDefaultCell();
+        renderCellEditors();
+        draw();
+      };
+
+      const answerBtn = document.createElement('button');
+      answerBtn.textContent = cell.answer ? '정답 해제' : '정답 설정';
+      answerBtn.onclick = () => {
+        cells[index].answer = !cells[index].answer;
+        renderCellEditors();
+      };
+
+      actions.appendChild(imageBtn);
+      actions.appendChild(emojiBtn);
+      actions.appendChild(clearBtn);
+      actions.appendChild(answerBtn);
+
+      wrap.appendChild(head);
+      wrap.appendChild(preview);
+      wrap.appendChild(actions);
+
+      cellEditors.appendChild(wrap);
+    });
+  }
+
+  function setAnimal(animal) {
+    selectedAnimal = animal;
+    document.querySelectorAll('#animalBtns button').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.animal === animal);
+    });
+  }
+
+  function fillEmpty() {
+    const emoji = EMOJIS[selectedAnimal];
+    cells.forEach(cell => {
+      if ((cell.type === 'empty' || (!cell.image && !cell.emoji)) && emoji) {
+        cell.type = 'emoji';
+        cell.emoji = emoji;
+        cell.image = null;
+        cell.imageSrc = '';
+      }
+    });
+    renderCellEditors();
+    draw();
+  }
+
+  function clearAll() {
+    cells = cells.map(() => makeDefaultCell());
+    renderCellEditors();
+    draw();
+  }
+
+  function shuffleCells() {
+    for (let i = cells.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [cells[i], cells[j]] = [cells[j], cells[i]];
+    }
+    renderCellEditors();
+    draw();
+  }
+
+  function applyGrid() {
+    size = Number(gridSize.value);
+    ensureCells();
+    renderCellEditors();
+    draw();
+  }
+
+  function savePNG() {
+    draw();
+    const name = (fileName.value || 'captcha-image').trim();
+    const link = document.createElement('a');
+    link.download = `${name}.png`;
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+  }
+
+  function loadImage(file) {
+    if (!file || imageTargetIndex < 0) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      const img = new Image();
+      img.onload = () => {
+        cells[imageTargetIndex].type = 'image';
+        cells[imageTargetIndex].emoji = '';
+        cells[imageTargetIndex].image = img;
+        cells[imageTargetIndex].imageSrc = reader.result;
+        renderCellEditors();
+        draw();
+      };
+      img.src = reader.result;
+    };
+    reader.readAsDataURL(file);
+  }
+
+  document.getElementById('animalBtns').addEventListener('click', (e) => {
+    const btn = e.target.closest('button[data-animal]');
+    if (!btn) return;
+    setAnimal(btn.dataset.animal);
+  });
+
+  promptText.addEventListener('input', draw);
+  gridSize.addEventListener('change', applyGrid);
+  themeColor.addEventListener('input', draw);
+  buttonColor.addEventListener('input', () => {
+    saveBtn.style.background = buttonColor.value;
+    draw();
+  });
+  cellColor.addEventListener('input', draw);
+  bgColor.addEventListener('input', draw);
+  headerTextColor.addEventListener('input', draw);
+  bodyTextColor.addEventListener('input', draw);
+
+  document.getElementById('fillEmptyBtn').addEventListener('click', fillEmpty);
+  document.getElementById('clearBtn').addEventListener('click', clearAll);
+  document.getElementById('shuffleBtn').addEventListener('click', shuffleCells);
+  saveBtn.addEventListener('click', savePNG);
+
+  imageInput.addEventListener('change', (e) => {
+    loadImage(e.target.files && e.target.files[0]);
+    imageInput.value = '';
+  });
+
+  ensureCells();
+  saveBtn.style.background = buttonColor.value;
+  renderCellEditors();
+  draw();
+})();
+</script>
+</body>
+</html>
